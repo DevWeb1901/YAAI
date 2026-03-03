@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>⚠️ WARNING: SYSTEM BREACH ⚠️</title>
+    <style>
+        body { background: #000; margin: 0; overflow: hidden; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: #ff0000; }
+        
+        /* LOBBY */
+        #lobby { position: fixed; inset: 0; background: #111; z-index: 10000; display: flex; flex-direction: column; align-items: center; justify-content: center; color: white; cursor: pointer; text-align: center; }
+        .gift-icon { font-size: 100px; filter: drop-shadow(0 0 20px gold); animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        /* KONTEN PRANK */
+        .main-container { height: 100vh; display: none; flex-direction: column; align-items: center; justify-content: center; background: #000; }
+        .flash-red { animation: flash 0.2s infinite; }
+        @keyframes flash { 0% { background: #440000; } 50% { background: #000; } 100% { background: #440000; } }
+        
+        /* Video Wrapper */
+        .video-wrapper { width: 95%; max-width: 600px; height: 350px; background: #000; border: 3px solid #ff0000; box-shadow: 0 0 30px red; }
+        iframe { width: 100%; height: 100%; border: none; pointer-events: none; }
+
+        .status-msg { margin-top: 25px; font-weight: bold; font-family: 'Courier New', Courier, monospace; font-size: 1.1rem; letter-spacing: 2px; }
+
+        /* EMERGENCY EXIT (TRANSKPARAN 50%) */
+        .emergency-exit { 
+            position: fixed; bottom: 20px; right: 20px; 
+            width: 80px; height: 40px; 
+            background: rgba(255, 255, 255, 0.5); /* 50% Transparan */
+            color: #000; border: 2px solid #000; font-weight: bold;
+            border-radius: 5px; z-index: 99999; cursor: pointer; 
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px; text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="lobby" onclick="launchChaos()">
+        <div class="gift-icon">🎁</div>
+        <h1 style="color: gold;">HADIAH UNTUKMU</h1>
+        <p>Klik Box Untuk Membuka Hadiah Dari Gigs & Xyren</p>
+    </div>
+
+    <div class="main-container" id="stage">
+        <div class="video-wrapper">
+            <div id="player"></div>
+        </div>
+        <div class="status-msg" id="status">ANALYZING USER DATA...</div>
+    </div>
+
+    <!-- Tombol Exit 50% Transparan -->
+    <div class="emergency-exit" onclick="stopChaos()">EXIT</div>
+
+    <script>
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+        var player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '100%',
+                width: '100%',
+                videoId: 'hiRacdl02w4',
+                playerVars: {
+                    'autoplay': 1,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'hiRacdl02w4',
+                    'mute': 0, // Video tidak di-mute secara paksa
+                    'rel': 0,
+                    'modestbranding': 1
+                }
+            });
+        }
+
+        function launchChaos() {
+            // Fullscreen (Opsional tapi disarankan buat efek)
+            if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen();
+            
+            document.getElementById('lobby').style.display = 'none';
+            document.getElementById('stage').style.display = 'flex';
+            document.body.classList.add('flash-red');
+            
+            // Jalankan Video tanpa manipulasi volume (System Sync)
+            player.playVideo();
+
+            // Efek getar
+            setInterval(() => { if (navigator.vibrate) navigator.vibrate(200); }, 500);
+
+            // Teks nakal
+            const messages = ["ACCESSING CONTACTS...", "EXTRACTING MEDIA...", "SENDING IP TO SERVER...", "ENCRYPTION ACTIVE..."];
+            let idx = 0;
+            setInterval(() => {
+                document.getElementById('status').innerText = messages[idx % messages.length];
+                idx++;
+            }, 1500);
+        }
+
+        function stopChaos() {
+            if (confirm("LAB TEST FINISHED. Reset System?")) {
+                location.reload();
+            }
+        }
+
+        // Disable Back
+        history.pushState(null, null, location.href);
+        window.onpopstate = function () { history.go(1); };
+    </script>
+</body>
+</html>
